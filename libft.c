@@ -6,36 +6,11 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 09:04:54 by asemsey           #+#    #+#             */
-/*   Updated: 2024/01/04 11:51:42 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/01/05 16:27:03 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-
-int	ft_isnum(const char *c)
-{
-	if (c && *c && *c == '-')
-		c++;
-	while (c && *c)
-	{
-		if ('0' > *c || *c > '9')
-			return (0);
-		c++;
-	}
-	return (1);
-}
-
-static int	ft_isspace(char c)
-{
-	if (c == ' '
-		|| c == '\t'
-		|| c == '\n'
-		|| c == '\v'
-		|| c == '\f'
-		|| c == '\r')
-		return (1);
-	return (0);
-}
 
 static int	ft_to_int(const char *s)
 {
@@ -61,7 +36,8 @@ int	ft_atoi(const char *str)
 	i = 0;
 	negative = 1;
 	res = 0;
-	while (ft_isspace(str[i]) == 1)
+	while (*str == ' ' || *str == '\t' || *str == '\n'
+		|| *str == '\v' || *str == '\f' || *str == '\r')
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
@@ -76,4 +52,57 @@ int	ft_atoi(const char *str)
 	}
 	else
 		return (0);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+static void	ft_cases(int nbr, int fd)
+{
+	if (nbr == 0)
+	{
+		write(fd, "0", 1);
+		return ;
+	}
+	if (nbr == -2147483648)
+	{
+		write(fd, "-2147483648", 11);
+		return ;
+	}
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	char	str[12];
+	int		i;
+
+	i = 0;
+	if (n == 0 || n == -2147483648)
+	{
+		ft_cases(n, fd);
+		return ;
+	}
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = -n;
+	}
+	while (n > 0)
+	{
+		str[i] = '0' + (n % 10);
+		n /= 10;
+		i++;
+	}
+	while (i > 0)
+	{
+		i--;
+		write(fd, &str[i], 1);
+	}
 }

@@ -6,7 +6,7 @@
 #    By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/13 08:45:48 by asemsey           #+#    #+#              #
-#    Updated: 2024/01/04 11:50:52 by asemsey          ###   ########.fr        #
+#    Updated: 2024/01/05 16:29:30 by asemsey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,16 +15,17 @@ CLIENT = client
 
 CFLAGS = -Wall -Wextra -Werror
 
-SSRC = server.c libft.c
-CSRC = client.c libft.c
+SHARED = libft.c
+SSRC = server.c
+CSRC = client.c
 
 all: $(SERVER) $(CLIENT)
 
 $(SERVER):
-	cc $(CFLAGS) -o $(SERVER) $(SSRC)
+	cc $(CFLAGS) -o $(SERVER) $(SSRC) $(SHARED)
 
 $(CLIENT):
-	cc $(CFLAGS) -o $(CLIENT) $(CSRC)
+	cc $(CFLAGS) -o $(CLIENT) $(CSRC) $(SHARED)
 
 clean:
 	rm -f $(SERVER) $(CLIENT)
